@@ -2,8 +2,8 @@ package kanjava.msgpack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import org.msgpack.rpc.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,11 +37,29 @@ public class RPCHandlerImpl implements RPCHandler {
 
 	@Override
 	public String error(String message) {
-		return "Always Error " + message;
+		throw new RuntimeException("Always Error " + message);
 	}
 
-	public void error(Request request, String message) {
-		request.sendError("error method returns", error(message));
+	@Override
+	public String heavy() {
+		LOG.debug("called heavy");
+		try {
+			TimeUnit.SECONDS.sleep(10);
+			return "heavy";
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public String light() {
+		LOG.debug("called light");
+		try {
+			TimeUnit.SECONDS.sleep(2);
+			return "light";
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

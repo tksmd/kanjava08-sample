@@ -9,5 +9,9 @@ public interface RPCHandler {
 	public List<RPCMessage> getMessages();
 		
 	public String error(String message);
+	
+	public String heavy();
+	
+	public String light();
 
 }

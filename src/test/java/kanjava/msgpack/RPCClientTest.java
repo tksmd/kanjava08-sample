@@ -12,11 +12,11 @@ import org.msgpack.rpc.error.RemoteError;
 
 public class RPCClientTest {
 
-	private static RPCClient RPC;
+	private static RPCClient<RPCHandler> RPC;
 
 	@BeforeClass
 	public static void クライアントを準備() throws Exception {
-		RPC = new RPCClient();
+		RPC = RPCClient.newRPCClient();
 		RPC.start();
 	}
 
@@ -54,7 +54,8 @@ public class RPCClientTest {
 	@Test(expected = RemoteError.class)
 	public void エラー() throws Exception {
 		RPCHandler handler = RPC.getHandler();
-		handler.error("エラーかなー");
+		String error = handler.error("エラーかなー");
+		System.out.println(error);
 	}
 
 }
