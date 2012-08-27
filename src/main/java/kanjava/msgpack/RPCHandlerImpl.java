@@ -3,6 +3,7 @@ package kanjava.msgpack;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.msgpack.rpc.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +21,10 @@ public class RPCHandlerImpl implements RPCHandler {
 	public List<RPCMessage> getMessages() {
 		LOG.debug("called getMessages");
 		List<RPCMessage> ret = new ArrayList<RPCMessage>();
-		ret.add(create(1,"s_kozake"));
-		ret.add(create(2,"tksmd"));
-		ret.add(create(3,"hakurai"));
-		ret.add(create(4,"irof?!"));
+		ret.add(create(1, "s_kozake"));
+		ret.add(create(2, "tksmd"));
+		ret.add(create(3, "hakurai"));
+		ret.add(create(4, "irof?!"));
 		return ret;
 	}
 
@@ -32,6 +33,15 @@ public class RPCHandlerImpl implements RPCHandler {
 		ret.id = id;
 		ret.body = body;
 		return ret;
+	}
+
+	@Override
+	public String error(String message) {
+		return "Always Error " + message;
+	}
+
+	public void error(Request request, String message) {
+		request.sendError("error method returns", error(message));
 	}
 
 }
